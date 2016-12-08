@@ -17,10 +17,26 @@ def sendemail(from_addr, to_addr_list,
     server.quit()
     return problems
 
+def randomList(oldList):
+    newList = []
+    for i in range(0,len(oldList)):
+        listIndex = random.randint(0,len(oldList) - 1)
+        newList.append(oldList[listIndex])
+        oldList.pop(listIndex)
+    return newList
+
+def shiftList(oldList):
+    newList = []
+    for element in oldList:
+        newIndex = oldList.index(element)
+        if newIndex >= len(oldList) - 1:
+            newIndex = 0
+        newList.insert(newIndex, element)
+    return newList
 
 
 presents = ['charlie bishop','sam cardy','adam houldershaw','joseph jones','halley woods']
-santas = ['charlie bishop','sam cardy','adam houldershaw','joseph jones','halley woods']
+santas = []
 
 emails = {'charlie bishop':'charliebishop21@live.co.uk',
           'sam cardy':'sam@gmail.com',
@@ -28,24 +44,22 @@ emails = {'charlie bishop':'charliebishop21@live.co.uk',
           'joseph jones':'joseph@aldergrange.com',
           'halley woods':'halley@live.co.uk'}
 
-choices = len(presents)
-while choices > 0:
+presents = randomList(presents)
+santas = shiftList(presents)
+
+for i in range(0,len(presents)):
     
-    present = random.choice(presents)
-    santa = random.choice(santas)
+    present = presents[i]
+    santa = santas[i]
+    
+    print (emails[santa])
+    
+    sendemail(from_addr    = 'test@gmail.com', 
+              to_addr_list = [emails[santa]],
+              subject      = 'your secret santa', 
+              message      = present, 
+              login        = 'test@gmail.com', 
+              password     = '1234')    
 
-    if str(present) != str(santa):
-        presents.remove(present)
-        santas.remove(santa)
-        print (emails[santa])
-
-        sendemail(from_addr    = 'test@gmail.com', 
-                  to_addr_list = [emails[santa]],
-                  subject      = 'your secret santa', 
-                  message      = present, 
-                  login        = 'test@gmail.com', 
-                  password     = '1234')    
-
-        choices -= 1
 
 
